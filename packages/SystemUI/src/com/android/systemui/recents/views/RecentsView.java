@@ -354,6 +354,8 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
 
         boolean showClearAllRecents = Settings.System.getInt(resolver,
                 Settings.System.SHOW_CLEAR_ALL_RECENTS, 1) == 1;
+        boolean enableMemDisplay = Settings.System.getInt(resolver,
+                Settings.System.SYSTEMUI_RECENTS_MEM_DISPLAY, 1) == 1;
 
         Rect taskStackBounds = new Rect();
         mConfig.getTaskStackBounds(width, height, mConfig.systemInsets.top,
@@ -390,6 +392,14 @@ public class RecentsView extends FrameLayout implements TaskStackView.TaskStackV
             if (mSearchBar == null || isLandscape) {
                 params.topMargin = mContext.getResources().
                     getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height);
+            } else if (mSearchBar == null && enableMemDisplay) {
+            	params.topMargin = mContext.getResources().
+                    getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height)
+                        + 25;
+            } else if (mSearchBar != null && enableMemDisplay) {
+            	params.topMargin = mContext.getResources().
+                    getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height)
+                        + searchBarSpaceBounds.height() + 25;
             } else {
                 params.topMargin = mContext.getResources().
                     getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height)
